@@ -14,6 +14,9 @@ block main
                 style="width: 100px"
             )
     
+    if(product.description)
+        h1(class="mb-4") !{product.description}
+
     if(product.status)
         div(class="mb-4")
             span Trạng thái: 

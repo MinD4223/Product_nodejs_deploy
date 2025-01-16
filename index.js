@@ -5,6 +5,7 @@ const database = require("./config/database");
 const flash = require('express-flash')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const path = require('path');
 require("dotenv").config();
 const systemConfig = require("./config/system");
 
@@ -22,6 +23,8 @@ app.set("view engine", "pug");
 app.use(cookieParser('JJDIEHUUFHRU'));
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
+// Tiny MCE
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
 
 app.use(express.static(`${__dirname}/public`));
 app.use(methodOverride("_method"));
