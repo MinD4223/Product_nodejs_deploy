@@ -1,7 +1,10 @@
 const Product = require("../../models/product.model");
+const ProductCategory = require("../../models/product-category.model")
+const Account = require("../../models/account.model");
 const filterStatusHelper = require("../../helpers/filterStatusHelper");
 const searchHelper = require("../../helpers/searchHelper");
 const paginationHelper = require("../../helpers/paginationHelper");
+const createTreeHelper = require("../../helpers/createTree")
 const { prefixAdmin } = require("../../config/system");
 module.exports.product = async (req, res) => {
   let find = {
@@ -34,12 +37,29 @@ module.exports.product = async (req, res) => {
   }else{
     sort.position = "desc"
   }
-  
 
   const products = await Product.find(find)
     .sort(sort)
     .limit(objectPagination.limitItems)
     .skip(objectPagination.skip);
+  for(const product of products){
+    // Thông tin người tạo
+    const user = await Account.findOne({
+      _id: product.createBy.account_id
+    });
+    if(user){
+      product.accountFullName = user.fullName
+    }
+    // Thông tin người cập nhật
+    const updateBy = product.updateBy.slice(-1)[0];
+    if (updateBy) {
+      const userUpdated = await Account.findOne({
+        _id: updateBy.account_id
+      })
+      updateBy.accountFullName = userUpdated.fullName;
+    }
+    
+  }
   res.render("admin/page/product/index", {
     titlePage: "San pham",
     products: products,
@@ -101,9 +121,18 @@ module.exports.deleteItem = async (req, res) => {
   res.redirect("back");
 };
 
-module.exports.create = (req, res) => {
+module.exports.create = async(req, res) => {
+  const find = {
+    deleted: false,
+  }
+
+  const records = await ProductCategory.find(find)
+
+  const category = createTreeHelper.tree(records)
+
   res.render("admin/page/product/create", {
     pageTitle: "Thêm mới sản phẩm",
+    category: category,
   });
 };
 
@@ -120,6 +149,9 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
+  req.body.createBy = {
+    account_id: res.locals.user.id
+  }
   // if (req.file) {
   //   req.body.thumbnail = `/uploads/${req.file.filename}`;
   // }
@@ -136,13 +168,19 @@ module.exports.edit = async(req, res) => {
       deleted: false,
       _id: req.params.id
     }
+
+    const findCategory = { 
+      deleted: false
+    }
   
     const product = await Product.findOne(find)
-    console.log(product)
+    const records = await ProductCategory.find(findCategory)
+    const category = createTreeHelper.tree(records)
   
     res.render("admin/page/product/edit", {
-      titlePage: "Chỉnh sửa sản phẩm",
-      product: product
+      pageTitle: "Chỉnh sửa sản phẩm",
+      product: product,
+      category: category
     });
   } catch (error) {
     res.redirect(`${prefixAdmin}/products`);
@@ -160,7 +198,15 @@ module.exports.editPatch = async(req, res) => {
   }
 
   try {
-    await Product.updateOne({ _id: req.params.id}, req.body);
+    const updateBy = {
+      account_id: res.locals.user.id,
+      updateAt: new Date()
+    }
+
+    await Product.updateOne({ _id: req.params.id}, {
+      ...req.body,
+      $push: {updateBy: updateBy}
+    });
     req.flash("success", "Cập nhật thành công")
   } catch (error) {
     req.flash("success", "Cập nhật thất bại")

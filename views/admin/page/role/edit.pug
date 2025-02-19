@@ -1,0 +1,34 @@
+extends ../../layout/default.pug
+include ../../mixin/alert.pug
+block main 
+    h1(class="mb-4") Chỉnh sửa nhóm quyền 
+    +alert-success(5000)
+    form(
+        action=`${prefixAdmin}/roles/edit/${result.id}?_method=PATCH`
+        method="POST"
+    )
+        div(class="form-group")
+            label(for="title") Tiêu đề
+            input(
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                value=result.title
+                required
+            )
+        div(class="form-group")
+            label(for="description") Mô tả
+            input(
+                type="text"
+                class="form-control"
+                id="description"
+                name="description"
+                value=result.description
+                required
+            )
+        div(class="form-group")
+            button(
+                type="submit"
+                class="btn btn-primary"
+            ) Cập nhật
