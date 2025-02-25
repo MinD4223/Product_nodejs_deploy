@@ -14,6 +14,23 @@ block main
                 style="width: 100px"
             )
     
+    form(
+        action=`/cart/add/${product.id}`
+        method="POST"
+    )
+        input(
+            class="form-control"
+            type="number"
+            name="quantity"
+            value="1"
+            min="1"
+            max=product.stock
+        )
+        button(
+            type="submit"
+            class="btn btn-success btn-block"
+        ) Thêm vào giỏ hàng
+    
     
     //- a(
     //-      href=`${prefixAdmin}/products/edit/${product.id}`

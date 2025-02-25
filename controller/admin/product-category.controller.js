@@ -61,16 +61,24 @@ module.exports.create = async (req, res) => {
 };
 
 module.exports.createPost = async (req, res) => {
-  if (req.body.position == "") {
-    const count = await ProductCategory.countDocuments();
-    req.body.position = count + 1;
-  } else {
-    req.body.position = parseInt(req.body.position);
-  }
-  const record = new ProductCategory(req.body);
-  await record.save();
+  console.log(res.locals.role.permissions);
+  const permissions = res.locals.role.permissions
 
-  res.redirect(`${prefixAdmin}/product-category`);
+  if (permissions.includes("product-category_create")) {
+    if (req.body.position == "") {
+      const count = await ProductCategory.countDocuments();
+      req.body.position = count + 1;
+    } else {
+      req.body.position = parseInt(req.body.position);
+    }
+    const record = new ProductCategory(req.body);
+    await record.save();
+
+    res.redirect(`${prefixAdmin}/product-category`);
+  }else{
+    return;
+  }
+  
 };
 
 module.exports.edit = async (req, res) => {
