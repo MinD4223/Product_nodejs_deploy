@@ -141,3 +141,344 @@
 .sub-menu ul li:hover > ul{
     display: block;
 }
+
+/* CSS Chat */
+.chat {
+    width: 100%;
+    max-width: 1000px;
+    background: #f4f4f8;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.inner-body {
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inner-incomming, .inner-outgoing {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.inner-incomming {
+    align-self: flex-start;
+    background: #e3f2fd;
+}
+
+.inner-incomming .inner-name {
+    font-weight: bold;
+    font-size: 12px;
+    color: #1976d2;
+}
+
+.inner-outgoing {
+    align-self: flex-end;
+    background: #c8e6c9;
+}
+
+.inner-foot {
+    padding: 10px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-top: 1px solid #ddd;
+}
+
+.inner-form {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+}
+
+.inner-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.inner-form button {
+    background: #1976d2;
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.inner-form button i {
+    font-size: 16px;
+}
+
+.tooltip {
+    visibility: hidden;
+}
+
+.tooltip.shown {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* image */
+.chat .inner-body .inner-images img{
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    background: #efefef;
+    padding: 10px;
+    margin: 0 5px 5px 0;
+    border-radius: 5px;
+}
+
+.chat .inner-body .inner-outgoing .inner-images{
+    margin-left: auto;
+    text-align: right;
+}
+
+.chat .inner-body .inner-outgoing .inner-images img{
+    margin: 0 0 5px 5px;
+}
+
+/* preview-image */
+.chat .inner-preview-images{
+    position: relative;
+}
+
+.chat .inner-preview-images .label-container{
+    display: none;
+}
+.chat .inner-preview-images .input-container{
+    display: none;
+}
+
+.chat .inner-preview-images .image-preview{
+    height: auto;
+    padding: 0;
+    border-radius: 0;
+}
+.chat .inner-preview-images .image-preview-item{
+    width: 90px;
+    background-size: contain;
+}
+/* typing */
+.inner-list-typing {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 300px;
+    padding: 10px;
+}
+
+.box-typing {
+    display: flex;
+    align-items: center;
+    background: #f3f3f3;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.inner-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.inner-dots {
+    display: flex;
+    margin-left: 8px;
+}
+
+.inner-dots span {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    background: #333;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+.inner-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.inner-dots span:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.inner-dots span:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* avatar */
+.box-user {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 10px auto;
+}
+
+.inner-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.inner-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inner-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.inner-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+/* CSS cho nút bấm */
+.add-friend, .cancel-friend {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-friend {
+    background-color: #007bff;
+    color: white;
+}
+
+.cancel-friend {
+    background-color: #6c757d;
+    color: white;
+}
+
+.add-friend:hover {
+    background-color: #0056b3;
+}
+
+.cancel-friend:hover {
+    background-color: #5a6268;
+}
+
+.box-user [button-cancel-friend]{
+    display: none;
+}
+
+.box-user.add [button-add-friend]{
+    display: none;
+}
+
+.box-user.add [button-cancel-friend]{
+    display: inline-block;
+}
+
+.box-user [button-deleted-friend]{
+    display: none;
+}
+
+.box-user.refuse [button-accept-friend]{
+    display: none;
+}
+
+.box-user.refuse [button-refuse-friend]{
+    display: none;
+}
+
+.box-user.refuse [button-deleted-friend]{
+    display: inline-block;
+}
+
+.box-user [button-accepted-friend]{
+    display: none;
+}
+
+.box-user.accept [button-accept-friend]{
+    display: none;
+}
+
+.box-user.accept [button-refuse-friend]{
+    display: none;
+}
+
+.box-user.accept [button-accepted-friend]{
+    display: inline-block;
+}
+
+.box-room {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    background-color: #f9f9f9;
+}
+
+.inner-avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.inner-info {
+    flex: 1;
+}
+
+.inner-name {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.inner-buttons .btn {
+    font-size: 14px;
+}

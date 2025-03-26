@@ -1,0 +1,31 @@
+extends ../../layout/default.pug
+include ../../mixin/box-head.pug
+
+block main 
+    .container.my-3 
+        include ../../partial/list-button.pug
+        .row 
+            .col-12
+                +box-head("Danh sách ban be")
+        .row(data-users-friend) 
+            each user in users
+                .col-6(user-id=user.id)
+                    div(class="box-user ")
+                        div(class="inner-avatar")
+                            img(
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMqI4dJM6gAS7v_jKJy0_bCkeqZpZ-_vPO67WSQpi-9wqkdqScFvd57VvMG3qS2NnbzXU&usqp=CAU"
+                                alt="levan a"
+                            )
+                        div(class="inner-info")
+                            div(class="inner-name") #{user.fullName}
+                            div(class="inner-buttons")
+                                a(
+                                    href=`/chat/${user.roomChatId}`
+                                    class="btn btn-sm btn-primary mr-1"
+                                ) Nhắn tin
+                        div(
+                            class="inner-status"
+                            status=user.statusOnline
+                        )  #{user.statusOnline}
+block script 
+    script(src="/js/user.js" type="module")

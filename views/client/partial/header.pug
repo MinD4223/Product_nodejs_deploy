@@ -5,7 +5,7 @@ header.header
             .col-3
                 .inner-logo
                     a(href="/")
-                        img(src="/image/logo.png", alt="")
+                        img(src=settingGeneral.logo, alt="")
 
             .col-5  
                 form(
@@ -52,8 +52,12 @@ header.header
                         li
                             a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.totalQuantity : "0"})
                         if(user)
+                            li  
+                                a(href="/user/info") #{user.fullName}
                             li
                                 a(href="/user/logout") Đăng xuất
+                            li
+                                a(href="/rooms-chat") Phòng chat
                         else 
                             li  
                                 a(href="/user/register") Đăng ký

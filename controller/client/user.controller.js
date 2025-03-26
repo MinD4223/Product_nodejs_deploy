@@ -3,6 +3,7 @@ const md5 = require("md5")
 const generateHelper = require("../../helpers/generate");
 const sendMailHelper = require("../../helpers/sendMail")
 const ForgotPassword = require("../../models/forgot-password.model");
+const Cart = require("../../models/cart.model")
 module.exports.index = async (req, res) => {
     res.render("client/page/user/register", { 
         titlePage: "Đăng ký" ,
@@ -55,7 +56,7 @@ module.exports.loginPost = async (req, res) => {
     }
     if(md5(password) != user.password){
         req.flash("error", "Sai mật khẩu");
-        req.redirect("back");
+        res.redirect("back");
         return;
     }
     if(user.status == "inactive"){
@@ -64,10 +65,33 @@ module.exports.loginPost = async (req, res) => {
         return;
     }
     res.cookie("tokenUser", user.tokenUser)
+
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", user.id)
+    })
+
+    await User.updateOne({_id: user.id}, {
+        statusOnline:"online"
+    })
+    //Luu user id vao collection cart
+    // console.log(user.id)
+    // console.log(req.cookies.cartId)
+    // await Cart.updateOne({
+    //     _id: req.cookies.cartId
+    // }, {
+    //     user_id: user.id
+    // })
+
     res.redirect("/")
 };
 
-module.exports.logout = (req, res) =>{
+module.exports.logout = async(req, res) =>{
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_OFFLINE", res.locals.user.id)
+    })
+    await User.updateOne({_id: res.locals.user.id}, {
+        statusOnline:"offline"
+    })
     res.clearCookie("tokenUser");
     res.redirect("/");
 }
@@ -162,3 +186,8 @@ module.exports.resetPasswordPost = async(req, res) => {
     res.redirect("/")
 }
 
+module.exports.info = async(req, res) => {
+    res.render("client/page/user/info", {
+        pageTitle: "Thông tin tài khoản"
+    })
+}
